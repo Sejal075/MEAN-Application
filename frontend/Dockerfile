@@ -1,6 +1,7 @@
 FROM node:18 AS build
 WORKDIR /app
 COPY . .
+RUN npm intsall
 RUN npm run build
 
 FROM nginx:alpine AS production
