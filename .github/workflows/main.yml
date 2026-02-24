@@ -28,3 +28,13 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKERHUB_USER }}/mean-frontend ./frontend
         docker push ${{ secrets.DOCKERHUB_USER }}/mean-frontend
+
+    - name: Deploy to VM
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+       host: ${{ secrets.HOST }}
+       username: ${{ secrets.USER_IP }}
+       key: ${{ secrets.SSH_KEY }}
+       script: |
+        cd mean-crud-docker-deployment
+        ./deploy.sh 
