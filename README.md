@@ -79,7 +79,68 @@ MongoDB
 
 ---
 
-## ⚙️ On Ubuntu VM
+## 🌐 Nginx Reverse Proxy
+
+Nginx is configured to:
+* Route / → Frontend
+* Route /api → Backend
+Act as a single entry point on port 80
+Configuration file:
+```
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://frontend:80;
+    }
+
+    location /api/ {
+        proxy_pass http://backend:5000/;
+    }
+}
+```
+
+---
+
+## ☁ Infrastructure Details
+
+🔹 Cloud Provider
+
+Deployed on AWS EC2
+
+🔹 Container Registry
+
+Images pushed to Docker Hub
+
+🔹 CI/CD Tool
+
+Automated using GitHub Actions
+
+
+---
+
+## ☁️ Cloud Deployment (AWS EC2)
+
+1. Launch Ubuntu EC2 instance
+   * VM: Ubuntu
+   * Instance Type: t3a.medium
+   * EBS Volume storage: 25GiB
+2. Install Docker & Docker Compose
+3. Clone repository
+4. Run:
+
+```bash
+docker-compose up -d
+```
+
+Application will be accessible via:
+
+```
+http://<EC2-Public-IP>
+```
+---
+
+## 🛠 Deployment Steps
 
 ### 1️⃣ Setup MEAN stack
 
@@ -107,7 +168,7 @@ cd angular-15-crud
 ng serve --host 0.0.0.0 --port 4200
 ```
 
-### 1️⃣ Clone the Repository
+### 2️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/Sejal075/MEAN-Application.git
@@ -116,7 +177,7 @@ npm init -y
 npm install express
 ```
 
-### 2️⃣ Build docker images and Start Containers
+### 3️⃣ Build docker images and Start Containers
 
 ```bash
 docker login -u sejalru23
@@ -128,7 +189,7 @@ docker images
 docker-compose up --build -d
 ```
 
-### 3️⃣ Access Application
+### 4️⃣ Access Application
 
 ```
 (http://<EC2-Public-IP>)
@@ -136,32 +197,24 @@ docker-compose up --build -d
 
 ---
 
-## ☁️ Cloud Deployment (AWS EC2)
-
-1. Launch Ubuntu EC2 instance
-2. Install Docker & Docker Compose
-3. Clone repository
-4. Run:
-
-```bash
-docker-compose up -d
-```
-
-Application will be accessible via:
-
-```
-http://<EC2-Public-IP>
-```
-
----
-
-## 🔄 CI/CD Pipeline
+## 🔄 CI/CD Workflow
 
 This project uses **GitHub Actions** to:
+Pipeline Steps:
 
-* Automatically build Docker images
-* Push images to Docker Hub
-* Deploy to remote VM using SSH
+1. Build backend Docker image
+
+2. Push backend image to Docker Hub
+
+3. Build frontend Docker image
+
+4. Push frontend image
+
+5. Deploy to remote VM using SSH
+
+6. Pull latest images
+
+7. Restart containers using deploy.sh
 
 Workflow file location:
 
