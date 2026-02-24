@@ -10,7 +10,7 @@ jobs:
          - name: Deploy to EC2
            uses: appleboy/ssh-action@v0.1.6
            with:
-             host: ubuntu
+             host: ${{ secrets.HOST }}
              username: ${{ secrets.USER_IP }}
              key: ${{ secrets.SSH_KEY }}
              script: |
