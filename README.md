@@ -54,6 +54,8 @@ mean-crud-docker-deployment/
 │
 ├── nginx/
 │   └── default.conf
+|
+├── deploy.sh
 │
 ├── docker-compose.yml
 └── .github/workflows/main.yml
